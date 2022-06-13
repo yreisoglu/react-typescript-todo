@@ -17,7 +17,6 @@ const EmptyToDoItem = (props: any) => {
   const [chosenEmoji, setChosenEmoji] = useState("🎉");
   const [content, setContent] = useState("");
   const [date, setDate] = useState<string>();
-  console.log(props);
   return (
     <div className="bg-white rounded-lg py-2 px-4 my-2 h-48 flex justify-around flex-col w-auto max-h-min border-dashed border-2 border-gray-300">
       <div className="flex justify-between items-center mb-2">

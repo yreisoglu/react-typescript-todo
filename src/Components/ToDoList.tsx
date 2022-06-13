@@ -29,6 +29,7 @@ export const ToDoList: React.FC<ToDoList> = (props) => {
               );
             })}
           </div>
+          {provided.placeholder}
         </div>
       )}
     </Droppable>

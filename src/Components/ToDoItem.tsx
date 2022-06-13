@@ -1,6 +1,7 @@
 import { Draggable } from "react-beautiful-dnd";
 import { BsClock, BsThreeDots } from "react-icons/bs";
 import React from "react";
+import useStore from "../store";
 
 type IToDoItem = {
   content: string;
@@ -10,10 +11,11 @@ type IToDoItem = {
   index: number;
   color: any;
 };
-
 const getItemStyle = (isDragging: boolean, draggableStyle: any, color: any) => ({
-  background: isDragging ? "rgb(107 114 128)" : "white",
-  color: isDragging ? "white" : "black",
+  opacity: isDragging ? "0.1" : "1",
+  background: isDragging ? "#efd4ff" : "white",
+  border: isDragging && "1px solid #2E0249",
+  borderColor: isDragging ? "#2E0249" : "transparent",
   ...draggableStyle,
 });
 const ToDoItem: React.FC<IToDoItem> = (props) => {
@@ -33,7 +35,7 @@ const ToDoItem: React.FC<IToDoItem> = (props) => {
           </div>
           <p className="break-all mb-2">{props.content}</p>
           <div className="flex justify-end">
-            <div className="flex items-center bg-orange-500 p-1 text-white rounded-lg">
+            <div className="flex items-center bg-slate-400 p-1 text-white rounded-lg">
               <BsClock className="mr-1"></BsClock>
               {`${props.date}` || null}
             </div>
