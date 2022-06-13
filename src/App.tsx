@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import CenterScreen from "./Components/CenterScreen";
+import CreateNewTodoZone from "./Components/CreateNewTodoZone";
 import DeleteZone from "./Components/DeleteZone";
 import useStore from "./store";
 function App() {
@@ -16,10 +17,15 @@ function App() {
     toggleDragging();
     const { source, destination } = result;
     console.log(source, destination);
-    console.log(todo);
 
     if (!destination) return;
-    if (source.droppableId !== destination.droppableId && destination.droppableId !== "delete") {
+    if (destination.droppableId === "create") return;
+    if (source.droppableId === "create" && destination.droppableId !== "delete") {
+      console.log("create");
+    } else if (
+      source.droppableId !== destination.droppableId &&
+      destination.droppableId !== "delete"
+    ) {
       const sourceArray: [] = (todo as any)[source.droppableId];
       const destinationArray: [] = (todo as any)[destination.droppableId];
       const [item] = sourceArray.splice(source.index, 1);
@@ -43,13 +49,14 @@ function App() {
       items.splice(destination.index, 0, newOrder);
       setTodo({ ...todo, [destination.droppableId]: items });
     }
-    console.log(todo);
   };
 
   return (
     <div className="App grid grid-flow-col grid-cols-8 ">
       <DragDropContext onDragEnd={onDragEnd} onDragStart={toggleDragging}>
-        <div className="col-span-1 w-full h-screen bg-blue-200"></div>
+        <div className="col-span-1 w-full h-screen">
+          <CreateNewTodoZone></CreateNewTodoZone>
+        </div>
         <div className="col-span-6 flex justify-center w-full">
           <CenterScreen todo={todo}></CenterScreen>
         </div>
