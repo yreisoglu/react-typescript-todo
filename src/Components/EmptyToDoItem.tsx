@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import data from "@emoji-mart/data";
 import { toast } from "react-toastify";
 import { IoIosAdd } from "react-icons/io";
+import AddButton from "./AddButton";
 
 const EmojiPicker = (props: any) => {
   const ref: any = useRef();
@@ -29,10 +30,6 @@ const EmptyToDoItem = (props: any) => {
       toast.error("Fill the task field");
       isValid = false;
     }
-    if (!date) {
-      toast.error("Pick a date");
-      isValid = false;
-    }
     return isValid;
   };
 
@@ -56,37 +53,23 @@ const EmptyToDoItem = (props: any) => {
           />
         )}
       </div>
-      <input
-        className="outline-none border-2 p-2 focus:border-transparent rounded-md bg-slate-200"
-        placeholder="You can add your task here!"
-        value={content}
-        name="content"
-        onChange={(e) => setContent(e.target.value)}
-      />
       <div className="flex justify-between">
-        <div className="flex flex-col">
-          <input
-            className={`outline-none border-2 p-2 focus:border-transparent rounded-md bg-slate-200`}
-            type="date"
-            name="date"
-            id=""
-            placeholder="Enter end Date"
-            onChange={(e) => {
-              setDate(e.target.value);
-            }}
-            value={date}
-          />
-        </div>
-        <button
+        <input
+          className="outline-none border-2 p-2 focus:border-transparent rounded-md bg-slate-200 text-center"
+          placeholder="Write your task!"
+          value={content}
+          name="content"
+          onChange={(e) => setContent(e.target.value)}
+        />
+        <AddButton
+          className=""
           onClick={() => {
             const isValid = checkValidation();
             if (isValid) {
               props.insertTodo(content, chosenEmoji, date);
             }
           }}
-        >
-          <IoIosAdd className="font-semibold rounded-md bg-violet-500 text-4xl text-white"></IoIosAdd>
-        </button>
+        ></AddButton>
       </div>
     </div>
   );

@@ -41,6 +41,12 @@
   <script>
     if (!localStorage.getItem("todo")) {
       localStorage.setItem("todo", JSON.stringify({ "next": [], "progress": [], "complete": [] }))
+    } if (!localStorage.getItem("todoHeaders")) {
+      localStorage.setItem("todoHeaders", JSON.stringify([
+        { label: "Next", name: "next", color: "#ff3b30" },
+        { label: "In Progress", name: "progress", color: "#5ac8fa" },
+        { label: "Complete", name: "complete", color: "#4cd964" },
+      ]))
     }
   </script>
 </body>

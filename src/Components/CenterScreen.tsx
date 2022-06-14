@@ -6,11 +6,18 @@ import { ToDoHeader } from "./ToDoHeader";
 import { v4 as uuidv4 } from "uuid";
 import EmptyToDoItem from "./EmptyToDoItem";
 import { IoIosAdd } from "react-icons/io";
+import AddButton from "./AddButton";
+import camelCase from "camelcase";
+import EmptyNewList from "./EmptyNewList";
 
 const CenterScreen = (props: any) => {
   const [todo, setTodo] = useState(props.todo);
   const [isAddPanelOpen, toggleAddPanel] = useState(false);
-
+  const [isNewListOpen, toggleNewList] = useState(false);
+  const [todoHeaders, settodoHeaders] = useState(() => {
+    const storedHeaders = JSON.parse(localStorage.getItem("todoHeaders") as string);
+    return storedHeaders || [];
+  });
   const addNewToDo = (header: string, content: string, chosenEmoji: string, date: Date) => {
     const items = (todo as any)[header];
 
@@ -19,10 +26,21 @@ const CenterScreen = (props: any) => {
     localStorage.setItem("todo", JSON.stringify(todo));
   };
 
+  const addNewHeader = (title: string, color: string) => {
+    const header = { label: title, name: camelCase(title), color: color };
+    todoHeaders.push(header);
+    const todos = todo;
+    todos[camelCase(title)] = [];
+    setTodo({ ...todo, todos });
+    localStorage.setItem("todo", JSON.stringify(todo));
+    settodoHeaders([...todoHeaders, todoHeaders]);
+    localStorage.setItem("todoHeaders", JSON.stringify(todoHeaders));
+  };
+
   return (
     <div className="h-full p-2 w-2/3">
       <div className="flex justify-center items-center flex-col mb-2">
-        <div className="font-bold text-4xl flex items-center mb-2" >
+        <div className="font-bold text-4xl flex items-center mb-2">
           <TiTick /> To Do
         </div>
         <p className="font-light  mb-8 flex items-center">
@@ -38,41 +56,39 @@ const CenterScreen = (props: any) => {
           to create new task.
         </p>
       </div>
-      <div className="xl:grid xl:grid-cols-3 lg:space-x-4  w-full">
-        <div className="lg:mb-14">
-          <ToDoHeader
-            title="Next"
-            itemCount={todo.next.length}
-            color={COLORS.red}
-            addToDo={() => toggleAddPanel(!isAddPanelOpen)}
-          />
-          {isAddPanelOpen && (
-            <EmptyToDoItem
-              insertTodo={(content: string, chosenEmoji: string, date: Date) => {
-                addNewToDo("next", content, chosenEmoji, date);
-                toggleAddPanel(false);
+      <div className="flex justify-around lg:space-x-4 w-full">
+        {todoHeaders.map((item: any) => {
+          return (
+            <div className="lg:mb-14 w-full">
+              <ToDoHeader
+                title={item.label}
+                itemCount={todo[item.name].length}
+                color={item.color}
+                addToDo={() => toggleAddPanel(!isAddPanelOpen)}
+              />
+              {isAddPanelOpen && item.label === "Next" && (
+                <EmptyToDoItem
+                  insertTodo={(content: string, chosenEmoji: string, date: Date) => {
+                    addNewToDo("next", content, chosenEmoji, date);
+                    toggleAddPanel(false);
+                  }}
+                ></EmptyToDoItem>
+              )}
+              <ToDoList id={item.name} todo={todo[item.name]} color={item.color}></ToDoList>
+            </div>
+          );
+        })}
+        <div className="h-auto w-full">
+          {isNewListOpen ? (
+            <EmptyNewList addNewHeader={addNewHeader}></EmptyNewList>
+          ) : (
+            <AddButton
+              className="p-3 bg-violet-500 text-white"
+              onClick={() => {
+                toggleNewList(true);
               }}
-            ></EmptyToDoItem>
+            ></AddButton>
           )}
-          <ToDoList id="next" todo={todo.next} color={COLORS.red}></ToDoList>
-        </div>
-        <div className="lg:mb-14">
-          <ToDoHeader
-            title="In Progress"
-            itemCount={todo.progress.length}
-            color={COLORS.blue}
-            addToDo={console.log}
-          />
-          <ToDoList id="progress" todo={todo.progress} color={COLORS.blue}></ToDoList>
-        </div>
-        <div className="lg:mb-14">
-          <ToDoHeader
-            title="Complete"
-            itemCount={todo.complete.length}
-            color={COLORS.green}
-            addToDo={console.log}
-          />
-          <ToDoList id="complete" todo={todo.complete} color={COLORS.green}></ToDoList>
         </div>
       </div>
     </div>

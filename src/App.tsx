@@ -12,12 +12,11 @@ function App() {
     const saved = JSON.parse(localStorage.getItem("todo") as string);
     return saved || {};
   });
-  
+
   const onDragEnd = (result: DropResult) => {
     toggleDragging();
     const { source, destination } = result;
     console.log(source, destination);
-
     if (!destination) return;
     if (destination.droppableId === "create") return;
     if (source.droppableId === "create" && destination.droppableId !== "delete") {
@@ -54,17 +53,12 @@ function App() {
     <div>
       <ToastContainer autoClose={1500}></ToastContainer>
 
-      <div className="App grid grid-flow-col grid-cols-8 ">
-        <DragDropContext onDragEnd={onDragEnd} onDragStart={toggleDragging}>
-          <div className="col-span-1 w-full h-screen"></div>
-          <div className="col-span-6 flex justify-center w-full">
-            <CenterScreen todo={todo}></CenterScreen>
-          </div>
-          <div className="col-span-1">
-            <DeleteZone></DeleteZone>
-          </div>
-        </DragDropContext>
-      </div>
+      <DragDropContext onDragEnd={onDragEnd} onDragStart={toggleDragging}>
+        <div className="col-span-7 flex justify-center w-full">
+          <CenterScreen todo={todo}></CenterScreen>
+        </div>
+        <DeleteZone></DeleteZone>
+      </DragDropContext>
     </div>
   );
 }

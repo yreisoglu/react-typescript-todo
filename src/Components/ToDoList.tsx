@@ -19,7 +19,6 @@ export const ToDoList: React.FC<ToDoList> = (props) => {
               return (
                 <ToDoItem
                   content={item.content}
-                  date={item.date}
                   emoji={item.emoji}
                   id={item.id}
                   index={index}

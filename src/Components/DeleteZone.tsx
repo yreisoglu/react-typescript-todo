@@ -9,7 +9,7 @@ const DeleteZone = (props: any) => {
       {(provided) => (
         <div className="delete w-full h-full" {...provided.droppableProps} ref={provided.innerRef}>
           {isDragging && (
-            <div className="h-screen w-full flex items-center justify-center hover:p-4 text-4xl hover:text-6xl transition-all">
+            <div className="w-full h-auto flex items-center justify-center hover:p-4 text-4xl hover:text-6xl transition-all">
               <MdDelete className="text-red-500"></MdDelete>
             </div>
           )}
