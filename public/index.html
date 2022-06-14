@@ -39,7 +39,9 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   <script>
-    localStorage.setItem("todo", JSON.stringify({ "next": [], "progress": [], "complete": [] }))
+    if (!localStorage.getItem("todo")) {
+      localStorage.setItem("todo", JSON.stringify({ "next": [], "progress": [], "complete": [] }))
+    }
   </script>
 </body>
 
