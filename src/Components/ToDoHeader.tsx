@@ -10,7 +10,7 @@ export interface IHeaders {
 export const ToDoHeader: React.FC<IHeaders> = ({ title, itemCount, color, addToDo }) => {
   return (
     <div
-      className="flex justify-between rounded-md px-3 py-2 items-center mb-3 w-auto"
+      className="flex justify-between rounded-md px-3 py-2 items-center mb-3"
       style={{ backgroundColor: color }}
     >
       {title === "Next" ? (

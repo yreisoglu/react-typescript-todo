@@ -11,9 +11,9 @@ type IToDoItem = {
   index: number;
   color: any;
 };
-const getItemStyle = (isDragging: boolean, draggableStyle: any, color: any) => ({
+export const getItemStyle = (isDragging: boolean, draggableStyle: any, color: any) => ({
   opacity: isDragging ? "0.1" : "1",
-  background: isDragging ? "#efd4ff" : "white",
+  background: isDragging ? "#efd4ff" : draggableStyle.background,
   border: isDragging && "1px solid #2E0249",
   borderColor: isDragging ? "#2E0249" : "transparent",
   ...draggableStyle,
@@ -27,15 +27,16 @@ const ToDoItem: React.FC<IToDoItem> = (props) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           style={getItemStyle(snapshot.isDragging, provided.draggableProps.style, props.color)}
-          className="bg-white rounded-lg py-2 px-4 max-h-min my-2 h-48 flex justify-around flex-col shadow-md w-auto"
+          className="bg-slate-50 rounded-lg py-2 px-4 max-h-min my-2 h-48 flex justify-around flex-col shadow-md w-auto"
         >
-          <div className="flex justify-between items-center mb-2">
-            <div className="text-xl bg-gray-100 rounded-full p-1">{props.emoji}</div>
-            <BsThreeDots onClick={() => console.log("asdf")} className="text-xl"></BsThreeDots>
+          <div className="flex justify-center items-center mb-2">
+            <div className="text-2xl rounded-full p-2 bg-slate-200 flex items-center justify-center">
+              {props.emoji}
+            </div>
           </div>
-          <p className="break-all mb-2">{props.content}</p>
+          <p className="break-all mb-2 font-semibold">{props.content}</p>
           <div className="flex justify-end">
-            <div className="flex items-center bg-slate-400 p-1 text-white rounded-lg">
+            <div className="flex items-center bg-violet-500 text-white rounded-lg px-2 py-1">
               <BsClock className="mr-1"></BsClock>
               {`${props.date}` || null}
             </div>
