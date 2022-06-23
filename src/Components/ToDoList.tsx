@@ -15,7 +15,7 @@ export const ToDoList: React.FC<ToDoList> = (props) => {
       {(provided) => (
         <div className="todo h-full" {...provided.droppableProps} ref={provided.innerRef}>
           <div className="flex flex-col justify-between">
-            {props.todo.map((item: any, index: number) => {
+            {props.todo && props.todo.map((item: any, index: number) => {
               return (
                 <ToDoItem
                   content={item.content}

@@ -12,7 +12,7 @@ function App() {
     const saved = JSON.parse(localStorage.getItem("todo") as string);
     return saved || {};
   });
-
+  
   const onDragEnd = (result: DropResult) => {
     toggleDragging();
     const { source, destination } = result;

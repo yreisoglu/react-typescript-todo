@@ -1,14 +1,28 @@
 import { useState } from "react";
 import { IoMdArrowBack, IoMdArrowForward, IoMdDoneAll } from "react-icons/io";
 import { COLORS } from "../values/colors";
-
+import { toast } from "react-toastify";
 const EmptyNewList = (props: any) => {
   const [title, setTitle] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedColor, setSelectedColor] = useState("rgb(139 92 246 / 1)");
   const [currentState, setCurrentState] = useState(0);
+  const todoHeaders = JSON.parse(localStorage.getItem("todoHeaders") as string);
+  const validation = () => {
+    let isValid = true;
+    if (!title) {
+      toast.error("Fill the header title");
+      isValid = false;
+    }
+    if (todoHeaders?.find((e: any) => e.name === title.toLowerCase())) {
+      toast.error("The title has already been taken");
+      isValid = false;
+    }
+    return isValid;
+  };
+
   return (
     <div
-      className="flex justify-around rounded-md px-3 py-2 items-center mb-3 bg-violet-500 transition-all duration-500 text-white"
+      className="flex justify-around rounded-md px-3 py-2 items-center mb-3 transition-all duration-500 text-white"
       style={{ backgroundColor: selectedColor && selectedColor }}
     >
       <button
@@ -52,7 +66,11 @@ const EmptyNewList = (props: any) => {
           <IoMdArrowForward></IoMdArrowForward>
         </button>
       ) : (
-        <button onClick={() => props.addNewHeader(title, selectedColor)}>
+        <button
+          onClick={() => {
+            if (validation()) props.addNewHeader(title, selectedColor);
+          }}
+        >
           <IoMdDoneAll></IoMdDoneAll>
         </button>
       )}
